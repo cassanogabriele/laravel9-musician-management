@@ -46,7 +46,6 @@ class MusiciansController extends Controller
             'musicians' => $musicians
         ], 200);
     }
-
     
     public function store(Request $request)
     {
