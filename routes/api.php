@@ -11,7 +11,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/announcements', [MusiciansController::class, 'store']);
+    Route::post('/announcements', [MusiciansController::class, 'store']); 
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -30,5 +30,8 @@ Route::get('musicians/{id}', [MusiciansController::class, 'show']);
 Route::get('musicians/{id}/edit', [MusiciansController::class, 'edit']);
 Route::put('musicians/{id}/edit', [MusiciansController::class, 'update']);
 Route::delete('musicians/{id}/delete', [MusiciansController::class, 'destroy']);
+// Récupérer les annonces de l'utlisateur 
+Route::get('/announces', [MusiciansController::class, 'userAnnounces']);
+
 
 

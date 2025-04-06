@@ -15,6 +15,11 @@ class Musician extends Model
         'name', 
         'style',
         'email',
-        'phone'
+        'phone',
+        'user_id'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }    
 }

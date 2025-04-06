@@ -54,6 +54,7 @@ class MusiciansController extends Controller
             'style' => 'required|string|max:191',
             'email' => 'required|email|max:191',
             'phone' => 'required|digits:10',
+            'userId' => 'required|exists:users,id'
         ]);
     
         if ($validator->fails()) {
@@ -61,22 +62,32 @@ class MusiciansController extends Controller
                 'status' => 422,
                 'errors' => $validator->messages()
             ], 422);
-        } else {
-            $musician = Musician::create([
-                'name' => $request->name,
-                'style' => $request->style,
-                'email' => $request->email,
-                'phone' => $request->phone,
-            ]);
-    
-            return response()->json([
-                'status' => 200,
-                'message' => 'Musicien ajouté avec succès',
-                'data' => $musician
-            ], 200);
         }
-    }    
-
+    
+        // Vérifier si l'utilisateur est connecté
+        if (!auth()->check()) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Utilisateur non authentifié'
+            ], 401);
+        }
+    
+        // Création du musicien avec l'ID de l'utilisateur connecté
+        $musician = Musician::create([
+            'name' => $request->name,
+            'style' => $request->style,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'user_id' => $request->userId,
+        ]);
+    
+        return response()->json([
+            'status' => 200,
+            'message' => 'Musicien ajouté avec succès',
+            'data' => $musician
+        ], 200);
+    }
+    
     public function show($id)
     {
         $musician = Musician::find($id);
@@ -93,6 +104,20 @@ class MusiciansController extends Controller
                 'messsage' => "Quelque chose n'est pas bon !"
             ], 500);
         }
+    }
+
+    public function userAnnounces(Request $request)
+    {       
+        // On récupère le user_id passé depuis Vue.js
+        $user_id = $request->input('user_id');
+     
+        // Récupérer les musiciens associés à cet utilisateur
+        $musicians = Musician::where('user_id', $user_id)->get();
+
+        return response()->json([
+            'status' => 200,
+            'musicians' => $musicians
+        ], 200);
     }
 
     public function edit($id)
