@@ -45,8 +45,17 @@ class WishlistController extends Controller
             ], 500);
         }
     }
-      
 
+    // Récupérer les wishlists de l'utilisateur connecté   
+    public function getUserWishlists(Request $request, $userId)
+    {
+        // On récupère les wishlists en fonction de l'ID de l'utilisateur
+        $wishlists = Wishlist::where('user_id', $userId)->get();
+    
+        // Retourner les wishlists de l'utilisateur sous forme de réponse JSON
+        return response()->json($wishlists);
+    }
+    
     // Ajouter un musicien à une wishlist existante
     public function addMusicianToWishlist(Request $request)
     {
