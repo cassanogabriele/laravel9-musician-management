@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MusiciansController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WishlistController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -33,5 +34,10 @@ Route::delete('musicians/{id}/delete', [MusiciansController::class, 'destroy']);
 // Récupérer les annonces de l'utlisateur 
 Route::get('/announces', [MusiciansController::class, 'userAnnounces']);
 
+// Listes de souhaits
+Route::post('/wishlist', [WishlistController::class, 'store']);
+Route::post('/wishlist/add-musician', [WishlistController::class, 'addMusicianToWishlist']);
+Route::get('/wishlists', [WishlistController::class, 'index']);
+Route::get('/wishlist/{id}', [WishlistController::class, 'show']);
 
 

@@ -21,5 +21,10 @@ class Musician extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
-    }    
+    }   
+    
+    public function wishlists()
+    {
+        return $this->belongsToMany(Wishlist::class);
+    }
 }
