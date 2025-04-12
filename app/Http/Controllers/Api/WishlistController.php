@@ -50,7 +50,9 @@ class WishlistController extends Controller
     public function getUserWishlists(Request $request, $userId)
     {
         // On récupère les wishlists en fonction de l'ID de l'utilisateur
-        $wishlists = Wishlist::where('user_id', $userId)->get();
+        $wishlists = Wishlist::with('musicians')
+            ->where('user_id', $userId)
+            ->get();
     
         // Retourner les wishlists de l'utilisateur sous forme de réponse JSON
         return response()->json($wishlists);
@@ -74,10 +76,26 @@ class WishlistController extends Controller
         return response()->json($wishlists);
     }
 
-    // Afficher une wishlist avec ses musiciens
-    public function show($id)
+    public function removeMusician($wishlistId, $musicianId)
     {
-        $wishlist = Wishlist::with('musicians')->findOrFail($id);
-        return response()->json($wishlist);
+        // Vérifie si la wishlist existe
+        $wishlist = Wishlist::find($wishlistId);
+        if (!$wishlist) {
+            return response()->json(['message' => 'Wishlist non trouvée'], 404);
+        }
+
+        // Vérifie si le musicien existe
+        $musician = Musician::find($musicianId);
+        if (!$musician) {
+            return response()->json(['message' => 'Musicien non trouvé'], 404);
+        }
+
+        // Supprime le musicien de la wishlist
+        $wishlist->musicians()->detach($musicianId);
+
+        // Répond avec un succès et le nom du musicien supprimé
+        return response()->json([            
+            'musicianName' => $musician->name
+        ], 200);
     }
 }

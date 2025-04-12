@@ -40,10 +40,10 @@ Route::get('/announces', [MusiciansController::class, 'userAnnounces']);
 Route::post('/wishlist', [WishlistController::class, 'store']);
 // Récupérer les listes de souhaits de l'utilisateur 
 Route::get('/wishlists/{userId}', [WishlistController::class, 'getUserWishlists']);
-
-
-
+// Ajouter un musicien à une liste de souhaits
 Route::post('/wishlist/add-musician', [WishlistController::class, 'addMusicianToWishlist']);
+// Supprimer un musicien d'une liste de souhaits
+Route::delete('/wishlist/{wishlistId}/musician/{musicianId}', [WishlistController::class, 'removeMusician']);
 Route::get('/wishlists', [WishlistController::class, 'index']);
 Route::get('/wishlist/{id}', [WishlistController::class, 'show']);
 
