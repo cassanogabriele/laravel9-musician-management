@@ -144,7 +144,7 @@ class MusiciansController extends Controller
             'name' => 'required|string|max:191',
             'style' => 'required|string|max:191',
             'email' => 'required|email|max:191',
-            'phone' => 'required|digits:10', // Correction ici
+            'phone' => 'required|digits:10', 
         ]);
 
         if ($validator->fails()) {

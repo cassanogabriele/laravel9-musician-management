@@ -10,11 +10,11 @@ class Wishlist extends Model
     protected $fillable = [
         'name', 
         'user_id'
-    ];   
+    ];
 
     public function musicians()
     {
-        return $this->belongsToMany(Musician::class, 'musician_wishlist');
+        return $this->belongsToMany(Musician::class);
     }
-
+    
 }
